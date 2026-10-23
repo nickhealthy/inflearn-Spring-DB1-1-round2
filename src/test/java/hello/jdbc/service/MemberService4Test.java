@@ -3,6 +3,7 @@ package hello.jdbc.service;
 import hello.jdbc.domain.Member;
 import hello.jdbc.repository.MemberRepository;
 import hello.jdbc.repository.MemberRepositoryV4_1;
+import hello.jdbc.repository.MemberRepositoryV4_2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +24,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
+ * [단순 예외 변환]
  * 예외 누수 문제 해결
  * SQLException 제거
- * <p>
+ *
  * MemberRepository 인터페이스 의존
+ *
+ * [스프링 예외 변환] MemberRepositoryV4_2 - 예외 변환기 사용
+ * - SQLException -> DataAccessException
  */
 @Slf4j
 @SpringBootTest
@@ -114,8 +119,9 @@ class MemberService4Test {
         }
 
         @Bean
-        MemberRepositoryV4_1 memberRepository() {
-            return new MemberRepositoryV4_1(dataSource());
+        MemberRepository memberRepository() {
+//            return new MemberRepositoryV4_1(dataSource());
+            return new MemberRepositoryV4_2(dataSource());
         }
 
         @Bean
